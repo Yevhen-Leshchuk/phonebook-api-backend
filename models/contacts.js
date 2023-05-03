@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 const fs = require('fs').promises;
 const path = require('path');
 const short = require('short-uuid');
@@ -34,7 +35,22 @@ const addContact = async (body) => {
 
 const removeContact = async (contactId) => {};
 
-const updateContact = async (contactId, body) => {};
+const updateContact = async (contactId, body) => {
+  const { name, email, phone } = body;
+  const data = await fs.readFile(contactsPath);
+  const contacts = JSON.parse(data);
+
+  contacts.forEach((contact) => {
+    if (contact.id === contactId) {
+      contact.name = name;
+      contact.email = email;
+      contact.phone = phone;
+    }
+  });
+  await fs.writeFile(contactsPath, JSON.stringify(contacts));
+
+  return contacts.find((contact) => contact.id === contactId);
+};
 
 module.exports = {
   listContacts,
