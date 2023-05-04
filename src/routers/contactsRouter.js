@@ -5,6 +5,7 @@ const {
   getContactById,
   addContact,
   updateContact,
+  removeContact,
 } = require('../../models/contacts');
 
 router.get('/', async (req, res, next) => {
@@ -18,17 +19,17 @@ router.get('/:contactId', async (req, res, next) => {
   if (!contact) {
     res.status(404).json({ message: 'Not found' });
   }
-  res.status(200).json({ contact, message: 'success' });
+  res.status(200).json({ contact, message: 'Success' });
 });
 
 router.post('/', async (req, res, next) => {
   if (!req.body) {
-    res.status(400).json({ message: `missing required field` });
+    res.status(400).json({ message: 'Missing required field' });
   }
 
   const contact = await addContact(req.body);
 
-  res.status(201).json({ contact, message: 'success' });
+  res.status(201).json({ contact, message: 'Success' });
 });
 
 router.put('/:contactId', async (req, res, next) => {
@@ -38,17 +39,24 @@ router.put('/:contactId', async (req, res, next) => {
   if (name && email && phone) {
     const updatedContact = await updateContact(contactId, req.body);
     if (updatedContact) {
-      res.status(200).json({ updatedContact, message: 'success' });
+      res.status(200).json({ updatedContact, message: 'Success' });
     } else {
       res.status(400).json({ message: 'Not found' });
     }
   } else {
-    res.status(400).json({ message: 'missing fields' });
+    res.status(400).json({ message: 'Missing fields' });
   }
 });
 
 router.delete('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' });
+  const { contactId } = req.params;
+  const deletedContact = await removeContact(contactId);
+
+  if (deletedContact) {
+    res.status(200).json({ message: 'Contact deleted' });
+  } else {
+    res.status(400).json({ message: 'Not found' });
+  }
 });
 
 module.exports = router;

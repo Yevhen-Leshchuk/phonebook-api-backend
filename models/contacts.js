@@ -33,8 +33,6 @@ const addContact = async (body) => {
   return newContact;
 };
 
-const removeContact = async (contactId) => {};
-
 const updateContact = async (contactId, body) => {
   const { name, email, phone } = body;
   const data = await fs.readFile(contactsPath);
@@ -50,6 +48,18 @@ const updateContact = async (contactId, body) => {
   await fs.writeFile(contactsPath, JSON.stringify(contacts));
 
   return contacts.find((contact) => contact.id === contactId);
+};
+
+const removeContact = async (contactId) => {
+  const data = await fs.readFile(contactsPath);
+  const contacts = JSON.parse(data);
+  const deletedContact = contacts.find((contact) => contact.id === contactId);
+
+  const newContactsList = contacts.filter(
+    (contact) => contact.id !== contactId
+  );
+  await fs.writeFile(contactsPath, JSON.stringify(newContactsList));
+  return deletedContact;
 };
 
 module.exports = {
