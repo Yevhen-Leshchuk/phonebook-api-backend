@@ -1,22 +1,24 @@
 const express = require('express');
-const router = express.Router();
-const {
-  listContacts,
-  getContactById,
-  addContact,
-  updateContact,
-  removeContact,
-} = require('../../models/contacts');
+const router = new express.Router();
 
 const {
   addPostValidation,
   addPutValidation,
 } = require('../middlewares/validationMiddleware');
+const { asyncWrapper } = require('../helpers/apiHelpers');
+const modelsMiddleware = require('../middlewares/models');
 
-router.get('/', async (req, res, next) => {
-  const contacts = await listContacts();
-  res.status(200).json({ contacts, message: 'success' });
-});
+const {
+  getContacts,
+  getContactById,
+  addContact,
+  updateContact,
+  removeContact,
+} = require('../../controllers/contacts');
+
+router.use(modelsMiddleware);
+
+router.get('/', asyncWrapper(getContacts));
 
 router.get('/:contactId', async (req, res, next) => {
   const { contactId } = req.params;
@@ -64,4 +66,6 @@ router.delete('/:contactId', async (req, res, next) => {
   }
 });
 
-module.exports = router;
+module.exports = {
+  contactsRouter: router,
+};
