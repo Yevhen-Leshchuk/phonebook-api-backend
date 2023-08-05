@@ -1,60 +1,52 @@
 /* eslint-disable array-callback-return */
 // const fs = require('fs').promises;
-// const path = require('path');
-// const short = require('short-uuid');
-
-// const contactsPath = path.resolve('./models/contacts.json');
+const ObjectId = require('mongodb').ObjectId;
 
 const getContacts = async (req, res) => {
   const contacts = await req.db.Contacts.find({}).toArray();
   res.json({ contacts });
 };
 
-const getContactById = async (contactId) => {
-  // const data = await fs.readFile(contactsPath);
-  // const contact = JSON.parse(data).filter((item) => item.id === contactId);
-  // return contact;
+const getContactById = async (req, res) => {
+  const { id } = req.params;
+  const contacts = await req.db.Contacts.findOne({ _id: new ObjectId(id) });
+
+  if (!contacts) {
+    res.status(404).json({ message: 'Not found' });
+  }
+  res.status(200).json({ contacts, message: 'Success' });
 };
 
-const addContact = async (body) => {
-  // const { name, email, phone } = body;
-  // const newContact = {
-  //   id: short.generate(),
-  //   name: name,
-  //   email: email,
-  //   phone: phone,
-  // };
-  // const data = await fs.readFile(contactsPath);
-  // const contacts = JSON.parse(data);
-  // const newContactList = [...contacts, newContact];
-  // await fs.writeFile(contactsPath, JSON.stringify(newContactList));
-  // return newContact;
+const addContact = async (req, res) => {
+  if (!req.body) {
+    res.status(400).json({ message: 'Missing required field' });
+  }
+  const { name, email, phone, favorite } = req.body;
+
+  await req.db.Contacts.insertOne({ name, email, phone, favorite });
+
+  res.status(201).json({ message: 'Success' });
 };
 
-const updateContact = async (contactId, body) => {
-  // const { name, email, phone } = body;
-  // const data = await fs.readFile(contactsPath);
-  // const contacts = JSON.parse(data);
-  // contacts.forEach((contact) => {
-  //   if (contact.id === contactId) {
-  //     contact.name = name;
-  //     contact.email = email;
-  //     contact.phone = phone;
-  //   }
-  // });
-  // await fs.writeFile(contactsPath, JSON.stringify(contacts));
-  // return contacts.find((contact) => contact.id === contactId);
+const updateContact = async (req, res) => {
+  const { name, email, phone, favorite } = req.body;
+  const { id } = req.params;
+
+  if (name && email && phone && favorite) {
+    await req.db.Contacts.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { name, email, phone, favorite } }
+    );
+  }
+
+  res.status(200).json({ message: 'Success' });
 };
 
-const removeContact = async (contactId) => {
-  // const data = await fs.readFile(contactsPath);
-  // const contacts = JSON.parse(data);
-  // const deletedContact = contacts.find((contact) => contact.id === contactId);
-  // const newContactsList = contacts.filter(
-  //   (contact) => contact.id !== contactId
-  // );
-  // await fs.writeFile(contactsPath, JSON.stringify(newContactsList));
-  // return deletedContact;
+const removeContact = async (req, res) => {
+  const { id } = req.params;
+  await req.db.Contacts.deleteOne({ _id: new ObjectId(id) });
+
+  res.status(200).json({ message: 'Contact deleted' });
 };
 
 module.exports = {

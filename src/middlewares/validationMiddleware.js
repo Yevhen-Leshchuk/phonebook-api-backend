@@ -3,7 +3,7 @@ const Joi = require('joi');
 module.exports = {
   addPostValidation: (req, res, next) => {
     const schema = Joi.object({
-      name: Joi.string().alphanum().min(3).max(30).required(),
+      name: Joi.string().min(3).max(30).required(),
       email: Joi.string().email({
         minDomainSegments: 2,
         tlds: { allow: ['com', 'net', 'lv'] },
@@ -13,6 +13,7 @@ module.exports = {
         .max(10)
         .pattern(/^[0-9]+$/)
         .required(),
+      favorite: Joi.boolean().required(),
     });
 
     const validationResult = schema.validate(req.body);
@@ -25,7 +26,7 @@ module.exports = {
 
   addPutValidation: (req, res, next) => {
     const schema = Joi.object({
-      name: Joi.string().alphanum().min(3).max(30).required(),
+      name: Joi.string().min(3).max(30).required(),
       email: Joi.string().email({
         minDomainSegments: 2,
         tlds: { allow: ['com', 'net', 'lv'] },
@@ -35,6 +36,7 @@ module.exports = {
         .max(10)
         .pattern(/^[0-9]+$/)
         .required(),
+      favorite: Joi.boolean().required(),
     });
 
     const validationResult = schema.validate(req.body);
