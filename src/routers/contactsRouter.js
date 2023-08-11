@@ -6,7 +6,6 @@ const {
   addPutValidation,
 } = require('../middlewares/validationMiddleware');
 const { asyncWrapper } = require('../helpers/apiHelpers');
-const modelsMiddleware = require('../middlewares/models');
 
 const {
   getContacts,
@@ -15,8 +14,6 @@ const {
   updateContact,
   removeContact,
 } = require('../../controllers/contacts');
-
-router.use(modelsMiddleware);
 
 router.get('/', asyncWrapper(getContacts));
 router.get('/:id', asyncWrapper(getContactById));
