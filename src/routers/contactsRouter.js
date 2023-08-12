@@ -8,18 +8,18 @@ const {
 const { asyncWrapper } = require('../helpers/apiHelpers');
 
 const {
-  getContacts,
-  getContactById,
-  addContact,
-  updateContact,
-  removeContact,
+  getContactsController,
+  getContactByIdController,
+  addContactController,
+  updateContactController,
+  deleteContactController,
 } = require('../../controllers/contacts');
 
-router.get('/', asyncWrapper(getContacts));
-router.get('/:id', asyncWrapper(getContactById));
-router.post('/', addPostValidation, asyncWrapper(addContact));
-router.put('/:id', addPutValidation, asyncWrapper(updateContact));
-router.delete('/:id', asyncWrapper(removeContact));
+router.get('/', asyncWrapper(getContactsController));
+router.get('/:id', asyncWrapper(getContactByIdController));
+router.post('/', addPostValidation, asyncWrapper(addContactController));
+router.put('/:id', addPutValidation, asyncWrapper(updateContactController));
+router.delete('/:id', asyncWrapper(deleteContactController));
 
 module.exports = {
   contactsRouter: router,
