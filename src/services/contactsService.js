@@ -1,4 +1,6 @@
+/* eslint-disable no-undef */
 const { Contact } = require('../db/postModel');
+const { WrongParametersError } = require('../helpers/errors');
 
 const getContacts = async () => {
   const contacts = await Contact.find({});
@@ -8,7 +10,7 @@ const getContacts = async () => {
 const getContactById = async (id) => {
   const contact = await Contact.findById(id);
   if (!contact) {
-    return res.status(404).json({ message: 'Not found' });
+    throw new WrongParametersError(`No contact with ${id} found`);
   }
   return contact;
 };
