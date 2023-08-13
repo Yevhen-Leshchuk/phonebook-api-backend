@@ -7,9 +7,9 @@ const start = async () => {
   try {
     await connectMongo();
 
-    app.listen(PORT, (err) => {
-      if (err) {
-        console.log('Error at server launch:', err);
+    app.listen(PORT, (error) => {
+      if (error) {
+        console.log('Error at server launch:', error);
       }
       console.log(`Server running. Use our API on port: ${PORT}`);
     });

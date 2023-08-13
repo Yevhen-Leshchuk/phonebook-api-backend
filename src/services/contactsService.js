@@ -10,7 +10,7 @@ const getContacts = async () => {
 const getContactById = async (id) => {
   const contact = await Contact.findById(id);
   if (!contact) {
-    throw new WrongParametersError(`No contact with ${id} found`);
+    throw new WrongParametersError(`No contact with id:${id} found`);
   }
   return contact;
 };
@@ -21,11 +21,15 @@ const addContact = async ({ name, email, phone, favorite }) => {
 };
 
 const updateContactsById = async (id, { name, email, phone, favorite }) => {
-  if (name && email && phone && favorite) {
-    await Contact.findByIdAndUpdate(id, {
-      $set: { name, email, phone, favorite },
-    });
-  }
+  await Contact.findByIdAndUpdate(id, {
+    $set: { name, email, phone, favorite },
+  });
+};
+
+const updateStatusContactById = async (id, { favorite }) => {
+  await Contact.findByIdAndUpdate(id, {
+    $set: { favorite },
+  });
 };
 
 const deleteContactById = async (id) => {
@@ -38,4 +42,5 @@ module.exports = {
   addContact,
   updateContactsById,
   deleteContactById,
+  updateStatusContactById,
 };

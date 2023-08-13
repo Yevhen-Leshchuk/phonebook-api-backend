@@ -6,6 +6,7 @@ const {
   addContact,
   updateContactsById,
   deleteContactById,
+  updateStatusContactById,
 } = require('../src/services/contactsService');
 
 const getContactsController = async (req, res) => {
@@ -22,10 +23,7 @@ const getContactByIdController = async (req, res) => {
 };
 
 const addContactController = async (req, res) => {
-  if (!req.body) {
-    res.status(400).json({ message: 'Missing required field' });
-  }
-  const { name, email, phone, favorite } = req.body;
+  const { name, email, phone, favorite = false } = req.body;
   await addContact({ name, email, phone, favorite });
 
   res.status(201).json({ message: 'Success' });
@@ -35,6 +33,14 @@ const updateContactController = async (req, res) => {
   const { name, email, phone, favorite } = req.body;
   const { id } = req.params;
   await updateContactsById(id, { name, email, phone, favorite });
+
+  res.status(200).json({ message: 'Success' });
+};
+
+const updateStatusContactController = async (req, res) => {
+  const { favorite } = req.body;
+  const { id } = req.params;
+  await updateStatusContactById(id, { favorite });
 
   res.status(200).json({ message: 'Success' });
 };
@@ -52,4 +58,5 @@ module.exports = {
   addContactController,
   updateContactController,
   deleteContactController,
+  updateStatusContactController,
 };
