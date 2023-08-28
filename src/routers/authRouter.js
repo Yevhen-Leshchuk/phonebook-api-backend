@@ -7,7 +7,7 @@ const { asyncWrapper } = require('../helpers/apiHelpers');
 const {
   signupController,
   loginController,
-} = require('../controllers/authController');
+} = require('../../controllers/authController');
 
 router.post('/signup', asyncWrapper(signupController));
 router.post('/login', asyncWrapper(loginController));

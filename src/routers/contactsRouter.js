@@ -15,7 +15,7 @@ const {
   updateContactController,
   updateStatusContactController,
   deleteContactController,
-} = require('../../controllers/contacts');
+} = require('../../controllers/contactController');
 
 router.get('/', asyncWrapper(getContactsController));
 router.get('/:id', asyncWrapper(getContactByIdController));

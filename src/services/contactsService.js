@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const { Contact } = require('../db/postModel');
+const { Contact } = require('../db/contactModel');
 const { WrongParametersError } = require('../helpers/errors');
 
 const getContacts = async () => {
