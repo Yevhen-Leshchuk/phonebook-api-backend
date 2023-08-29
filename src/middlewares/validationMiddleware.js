@@ -60,4 +60,21 @@ module.exports = {
 
     next();
   },
+
+  addAuthValidation: (req, res, next) => {
+    const schema = Joi.object({
+      email: Joi.string().email({
+        minDomainSegments: 2,
+        tlds: { allow: ['com', 'net', 'lv'] },
+      }),
+      password: Joi.string().min(3).max(30).required(),
+    });
+
+    const validationResult = schema.validate(req.body);
+    if (validationResult.error) {
+      next(new ValidationError(JSON.stringify(validationResult.error.details)));
+    }
+
+    next();
+  },
 };
