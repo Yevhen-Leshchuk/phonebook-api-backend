@@ -19,7 +19,7 @@ module.exports = {
 
     const validationResult = schema.validate(req.body);
     if (validationResult.error) {
-      next(new ValidationError(validationResult.error.details));
+      next(new ValidationError(validationResult.error.message));
     }
 
     next();
@@ -42,7 +42,7 @@ module.exports = {
 
     const validationResult = schema.validate(req.body);
     if (validationResult.error) {
-      return res.status(400).json({ status: validationResult.error.details });
+      return res.status(400).json({ status: validationResult.error.message });
     }
 
     next();
@@ -55,7 +55,7 @@ module.exports = {
 
     const validationResult = schema.validate(req.body);
     if (validationResult.error) {
-      return res.status(400).json({ status: validationResult.error.details });
+      return res.status(400).json({ status: validationResult.error.message });
     }
 
     next();
@@ -72,7 +72,7 @@ module.exports = {
 
     const validationResult = schema.validate(req.body);
     if (validationResult.error) {
-      next(new ValidationError(JSON.stringify(validationResult.error.details)));
+      next(new ValidationError(validationResult.error.message));
     }
 
     next();

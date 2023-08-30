@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-spacing */
 const { signup, login } = require('../src/services/authService');
-const { ConflictError } = require('../src/helpers/errors');
+const { ConflictError, NotAuthorizedError } = require('../src/helpers/errors');
 
 const signupController = async (req, res) => {
   const { email, password } = req.body;
@@ -15,11 +15,15 @@ const signupController = async (req, res) => {
 };
 
 const loginController = async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const token = await login(email, password);
+    const token = await login(email, password);
 
-  res.json({ status: 'success', token });
+    res.json({ status: 'success', token });
+  } catch (error) {
+    throw new NotAuthorizedError('Email or password is wrong');
+  }
 };
 
 module.exports = {
