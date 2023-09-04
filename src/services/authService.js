@@ -32,6 +32,10 @@ const login = async (email, password) => {
     process.env.JWT_SECRET
   );
 
+  user.token = token;
+
+  await user.save();
+
   return token;
 };
 

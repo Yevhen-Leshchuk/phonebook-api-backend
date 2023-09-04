@@ -3,8 +3,9 @@
 /* eslint-disable object-curly-spacing */
 const jwt = require('jsonwebtoken');
 const { NotAuthorizedError } = require('../helpers/errors');
+const { User } = require('../db/userModel');
 
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
   try {
     //TODO: validate tape token later (typeToken).
     const { authorization } = req.headers;
@@ -22,8 +23,18 @@ const authMiddleware = (req, res, next) => {
     }
 
     const user = jwt.decode(token, process.env.JWT_SECRET);
+    const foundUser = await User.findById(user._id);
+
+    if (!foundUser) {
+      next(new NotAuthorizedError('Not authorized1'));
+    }
+
+    if (foundUser.token !== token) {
+      next(new NotAuthorizedError('Not authorized2'));
+    }
+
     req.token = token;
-    req.user = user;
+    req.user = foundUser;
     next();
   } catch (error) {
     next(new NotAuthorizedError('Invalid a token'));
