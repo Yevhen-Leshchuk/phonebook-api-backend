@@ -26,11 +26,11 @@ const authMiddleware = async (req, res, next) => {
     const foundUser = await User.findById(user._id);
 
     if (!foundUser) {
-      next(new NotAuthorizedError('Not authorized1'));
+      next(new NotAuthorizedError('Not authorized'));
     }
 
     if (foundUser.token !== token) {
-      next(new NotAuthorizedError('Not authorized2'));
+      next(new NotAuthorizedError('Not authorized'));
     }
 
     req.token = token;
