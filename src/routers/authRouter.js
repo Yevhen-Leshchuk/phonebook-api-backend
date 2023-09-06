@@ -10,11 +10,13 @@ const {
   signupController,
   loginController,
   logoutController,
+  currentUserController,
 } = require('../../controllers/authController');
 
 router.post('/signup', addAuthValidation, asyncWrapper(signupController));
 router.post('/login', addAuthValidation, asyncWrapper(loginController));
 router.get('/logout', authMiddleware, asyncWrapper(logoutController));
+router.get('/current', authMiddleware, asyncWrapper(currentUserController));
 
 module.exports = {
   authRouter: router,

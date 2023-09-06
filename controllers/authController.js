@@ -1,6 +1,11 @@
 /* eslint-disable object-curly-spacing */
 const jwt = require('jsonwebtoken');
-const { signup, login, logout } = require('../src/services/authService');
+const {
+  signup,
+  login,
+  logout,
+  current,
+} = require('../src/services/authService');
 const { ConflictError, NotAuthorizedError } = require('../src/helpers/errors');
 
 const signupController = async (req, res) => {
@@ -35,8 +40,20 @@ const logoutController = async (req, res) => {
   res.status(204).json({ status: 'No Content' });
 };
 
+const currentUserController = async (req, res) => {
+  const user = jwt.decode(req.token, process.env.JWT_SECRET);
+
+  const currentUser = await current(user._id);
+
+  const { email, subscription } = currentUser;
+  const responseBody = { email, subscription };
+
+  res.json({ status: 'success', responseBody });
+};
+
 module.exports = {
   signupController,
   loginController,
   logoutController,
+  currentUserController,
 };

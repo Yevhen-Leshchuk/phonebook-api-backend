@@ -50,8 +50,19 @@ const logout = async (id) => {
   await user.save();
 };
 
+const current = async (id) => {
+  const user = await User.findById(id);
+
+  if (!user) {
+    throw new NotAuthorizedError('Not authorized');
+  }
+
+  return user;
+};
+
 module.exports = {
   signup,
   login,
   logout,
+  current,
 };
