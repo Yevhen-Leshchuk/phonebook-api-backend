@@ -1,5 +1,6 @@
 /* eslint-disable object-curly-spacing */
 /* eslint-disable indent */
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../db/userModel');
@@ -51,7 +52,11 @@ const logout = async (id) => {
 };
 
 const current = async (id) => {
-  const user = await User.findById(id);
+  const user = await User.findById(id).select({
+    _id: 0,
+    email: 1,
+    subscription: 1,
+  });
 
   if (!user) {
     throw new NotAuthorizedError('Not authorized');

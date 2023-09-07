@@ -43,10 +43,7 @@ const logoutController = async (req, res) => {
 const currentUserController = async (req, res) => {
   const user = jwt.decode(req.token, process.env.JWT_SECRET);
 
-  const currentUser = await current(user._id);
-
-  const { email, subscription } = currentUser;
-  const responseBody = { email, subscription };
+  const responseBody = await current(user._id);
 
   res.json({ status: 'success', responseBody });
 };
