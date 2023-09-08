@@ -1,6 +1,5 @@
 /* eslint-disable object-curly-spacing */
 /* eslint-disable indent */
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../db/userModel');

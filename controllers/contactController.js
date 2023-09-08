@@ -12,7 +12,7 @@ const {
 const getContactsController = async (req, res) => {
   let { page = 0, limit = 5, favorite } = req.query;
 
-  skip = page * limit;
+  const skip = page * limit;
   limit = parseInt(limit) > 5 ? 5 : parseInt(limit);
   page = parseInt(page);
 
