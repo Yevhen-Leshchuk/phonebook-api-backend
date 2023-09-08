@@ -10,9 +10,15 @@ const {
 } = require('../src/services/contactsService');
 
 const getContactsController = async (req, res) => {
-  const contacts = await getContacts();
+  let { page = 0, limit = 5, favorite } = req.query;
 
-  res.json({ contacts });
+  skip = page * limit;
+  limit = parseInt(limit) > 5 ? 5 : parseInt(limit);
+  page = parseInt(page);
+
+  const contacts = await getContacts({ skip, limit, favorite });
+
+  res.json({ contacts, skip, limit, favorite });
 };
 
 const getContactByIdController = async (req, res) => {

@@ -2,8 +2,13 @@
 const { Contact } = require('../db/contactModel');
 const { WrongParametersError } = require('../helpers/errors');
 
-const getContacts = async () => {
-  const contacts = await Contact.find({});
+const getContacts = async ({ skip, limit, favorite }) => {
+  const contacts = await Contact.find({})
+    .select({ __v: 0 })
+    .skip(skip)
+    .limit(limit)
+    .where('favorite')
+    .equals(favorite);
   return contacts;
 };
 
