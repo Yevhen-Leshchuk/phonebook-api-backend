@@ -2,13 +2,16 @@
 /* eslint-disable indent */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const gravatar = require('gravatar');
 const { User } = require('../db/userModel');
 const { NotAuthorizedError } = require('../helpers/errors');
 
 const signup = async (email, password) => {
+  const url = gravatar.url(email);
   const user = new User({
     email,
     password,
+    avatarURL: url,
   });
   await user.save();
 };
