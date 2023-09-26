@@ -28,7 +28,7 @@ const avatar = async (id, reqFile) => {
 
   Jimp.read(temporaryName, (err, avatar) => {
     if (err) throw err;
-    avatar.resize(250, 250).quality(60).write(`public/avatar/${avatarName}`);
+    avatar.resize(250, 250).quality(60).write(`public/avatars/${avatarName}`);
   });
 
   const user = await User.findByIdAndUpdate(id, {
