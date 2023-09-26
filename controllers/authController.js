@@ -24,9 +24,9 @@ const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const token = await login(email, password);
+    const user = await login(email, password);
 
-    res.json({ status: 'success', token });
+    res.json({ status: 'success', user });
   } catch (error) {
     throw new NotAuthorizedError('Email or password is wrong');
   }

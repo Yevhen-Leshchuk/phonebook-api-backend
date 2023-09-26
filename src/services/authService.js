@@ -17,7 +17,7 @@ const signup = async (email, password) => {
 };
 
 const login = async (email, password) => {
-  const user = await User.findOne({ email });
+  let user = await User.findOne({ email });
 
   if (!user) {
     throw new NotAuthorizedError(`No user with email '${email}' found`);
@@ -39,7 +39,15 @@ const login = async (email, password) => {
 
   await user.save();
 
-  return token;
+  const userSubscription = user.subscription;
+
+  user = {
+    email,
+    subscription: userSubscription,
+    token,
+  };
+
+  return user;
 };
 
 const logout = async (id) => {
