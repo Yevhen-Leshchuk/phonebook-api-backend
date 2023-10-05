@@ -38,7 +38,20 @@ const avatar = async (id, reqFile) => {
   return user;
 };
 
+const verification = async (verificationToken) => {
+  const user = await User.findOne(verificationToken);
+
+  if (!user) {
+    throw new NotAuthorizedError('Not found');
+  }
+
+  user.verificationToken = null;
+  user.verify = true;
+  await user.save();
+};
+
 module.exports = {
   patchUser,
   avatar,
+  verification,
 };

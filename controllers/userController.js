@@ -1,6 +1,10 @@
 /* eslint-disable object-curly-spacing */
 const jwt = require('jsonwebtoken');
-const { patchUser, avatar } = require('../src/services/userService');
+const {
+  patchUser,
+  avatar,
+  verification,
+} = require('../src/services/userService');
 
 const patchUserController = async (req, res) => {
   const user = jwt.decode(req.token, process.env.JWT_SECRET);
@@ -24,7 +28,15 @@ const avatarController = async (req, res) => {
   res.json({ status: 'success', avatarURL });
 };
 
+const verificationController = async (req, res) => {
+  const { verificationToken } = req.params;
+
+  await verification(verificationToken);
+  res.json({ status: 'Verification successful' });
+};
+
 module.exports = {
   patchUserController,
   avatarController,
+  verificationController,
 };

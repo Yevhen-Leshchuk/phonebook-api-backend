@@ -5,8 +5,11 @@ const router = new express.Router();
 
 const { asyncWrapper } = require('../helpers/apiHelpers');
 const { authMiddleware } = require('../middlewares/authMiddleware');
-const { patchUserController } = require('../../controllers/userController');
-const { avatarController } = require('../../controllers/userController');
+const {
+  patchUserController,
+  avatarController,
+  verificationController,
+} = require('../../controllers/userController');
 const { uploadMiddleware } = require('../middlewares/uploadMiddleware');
 
 router.patch(
@@ -21,6 +24,8 @@ router.patch(
   uploadMiddleware.single('avatar'),
   asyncWrapper(avatarController)
 );
+
+router.get('/verify/:verificationToken', asyncWrapper(verificationController));
 
 module.exports = {
   usersRouter: router,
