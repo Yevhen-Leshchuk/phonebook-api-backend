@@ -3,21 +3,41 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const gravatar = require('gravatar');
+const { v4: uuidv4 } = require('uuid');
+const sgMail = require('@sendgrid/mail');
 const { User } = require('../db/userModel');
 const { NotAuthorizedError } = require('../helpers/errors');
 
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 const signup = async (email, password) => {
   const url = gravatar.url(email);
+  const verificationToken = uuidv4();
+
   const user = new User({
     email,
     password,
     avatarURL: url,
+    verificationToken: verificationToken,
   });
   await user.save();
+
+  const message = {
+    from: process.env.NODEMAILER_LOGIN,
+    to: email,
+    subject: 'Thank you for registration',
+    templateId: 'd-4d7d39a85da14d819abb905cb00f8a56',
+    dynamicTemplateData: {
+      organizationName: 'phonebook-api-verification',
+      url: `http://localhost:8080/api/users/verify/${verificationToken}`,
+    },
+  };
+
+  await sgMail.send(message);
 };
 
 const login = async (email, password) => {
-  let user = await User.findOne({ email });
+  let user = await User.findOne({ email, verify: true });
 
   if (!user) {
     throw new NotAuthorizedError(`No user with email '${email}' found`);

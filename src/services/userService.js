@@ -39,7 +39,7 @@ const avatar = async (id, reqFile) => {
 };
 
 const verification = async (verificationToken) => {
-  const user = await User.findOne(verificationToken);
+  const user = await User.findOne({ verificationToken });
 
   if (!user) {
     throw new NotAuthorizedError('Not found');
@@ -47,6 +47,7 @@ const verification = async (verificationToken) => {
 
   user.verificationToken = null;
   user.verify = true;
+
   await user.save();
 };
 
