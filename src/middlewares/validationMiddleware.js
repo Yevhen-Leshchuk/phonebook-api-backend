@@ -77,4 +77,22 @@ module.exports = {
 
     next();
   },
+
+  addVerifyValidation: (req, res, next) => {
+    const schema = Joi.object({
+      email: Joi.string()
+        .email({
+          minDomainSegments: 2,
+          tlds: { allow: ['com', 'net', 'lv'] },
+        })
+        .required(),
+    });
+
+    const validationResult = schema.validate(req.body);
+    if (validationResult.error) {
+      next(new ValidationError(validationResult.error.message));
+    }
+
+    next();
+  },
 };

@@ -9,8 +9,8 @@ describe('Auth service login test', () => {
   });
   it('should return login data by providing token', async () => {
     const success = 'success';
-    const email = 'avatar@gmail.com';
-    const password = '12345avatar';
+    const email = 'evg.leschuk@gmail.com';
+    const password = '12345';
 
     const response = await request(app).post('/api/auth/login').send({
       email: email,

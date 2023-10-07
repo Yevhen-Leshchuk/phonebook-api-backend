@@ -4,6 +4,7 @@ const {
   patchUser,
   avatar,
   verification,
+  resendVerification,
 } = require('../src/services/userService');
 
 const patchUserController = async (req, res) => {
@@ -35,8 +36,16 @@ const verificationController = async (req, res) => {
   res.json({ status: 'Verification successful' });
 };
 
+const resendVerificationController = async (req, res) => {
+  const { email } = req.body;
+
+  await resendVerification(email);
+  res.json({ status: 'Verification email sent' });
+};
+
 module.exports = {
   patchUserController,
   avatarController,
   verificationController,
+  resendVerificationController,
 };

@@ -34,7 +34,6 @@ const loginController = async (req, res) => {
 
 const logoutController = async (req, res) => {
   const user = jwt.decode(req.token, process.env.JWT_SECRET);
-
   await logout(user._id);
 
   res.status(204).json({ status: 'No Content' });

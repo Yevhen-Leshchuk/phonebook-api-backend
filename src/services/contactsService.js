@@ -1,7 +1,9 @@
+/* eslint-disable spaced-comment */
 /* eslint-disable no-undef */
 const { Contact } = require('../db/contactModel');
 const { WrongParametersError } = require('../helpers/errors');
 
+//TODO: refactor code for pagination
 const getContacts = async ({ skip, limit, favorite }) => {
   if (skip > 0 && !favorite) {
     const contacts = await Contact.find({})

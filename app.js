@@ -1,3 +1,4 @@
+/* eslint-disable spaced-comment */
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
@@ -28,3 +29,5 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 module.exports = app;
+
+//TODO: add dockerfile for phonebook app
