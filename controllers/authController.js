@@ -5,6 +5,7 @@ const {
   login,
   logout,
   current,
+  forgotPassword,
 } = require('../src/services/authService');
 const { ConflictError, NotAuthorizedError } = require('../src/helpers/errors');
 
@@ -32,6 +33,14 @@ const loginController = async (req, res) => {
   }
 };
 
+const forgotPasswordController = async (req, res) => {
+  const { email } = req.body;
+
+  await forgotPassword(email);
+
+  res.json({ status: 'success' });
+};
+
 const logoutController = async (req, res) => {
   const user = jwt.decode(req.token, process.env.JWT_SECRET);
   await logout(user._id);
@@ -52,4 +61,5 @@ module.exports = {
   loginController,
   logoutController,
   currentUserController,
+  forgotPasswordController,
 };

@@ -70,6 +70,32 @@ const login = async (email, password) => {
   return user;
 };
 
+const forgotPassword = async (email) => {
+  const user = await User.findOne({ email, verify: true });
+
+  if (!user) {
+    throw new NotAuthorizedError(`No user with email '${email}' found`);
+  }
+
+  const newPassword = uuidv4();
+
+  user.password = newPassword;
+  user.save();
+
+  const message = {
+    from: process.env.NODEMAILER_LOGIN,
+    to: user.email,
+    subject: 'Forgot password',
+    templateId: 'd-7a929b44c10544e796e0ab515188cb10',
+    dynamicTemplateData: {
+      organizationName: 'phonebook-api-forgot-password',
+      password: newPassword,
+    },
+  };
+
+  await sgMail.send(message);
+};
+
 const logout = async (id) => {
   const user = await User.findById(id);
 
@@ -100,4 +126,5 @@ module.exports = {
   login,
   logout,
   current,
+  forgotPassword,
 };

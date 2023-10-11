@@ -11,10 +11,12 @@ const {
   loginController,
   logoutController,
   currentUserController,
+  forgotPasswordController,
 } = require('../../controllers/authController');
 
 router.post('/signup', addAuthValidation, asyncWrapper(signupController));
 router.post('/login', addAuthValidation, asyncWrapper(loginController));
+router.post('/forgot_password', asyncWrapper(forgotPasswordController));
 router.get('/logout', authMiddleware, asyncWrapper(logoutController));
 router.get('/current', authMiddleware, asyncWrapper(currentUserController));
 
