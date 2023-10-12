@@ -86,7 +86,7 @@ const forgotPassword = async (email) => {
     from: process.env.NODEMAILER_LOGIN,
     to: user.email,
     subject: 'Forgot password',
-    templateId: 'd-7a929b44c10544e796e0ab515188cb10',
+    templateId: 'd-87c49aafb00248439a9d04df8513ef9a',
     dynamicTemplateData: {
       organizationName: 'phonebook-api-forgot-password',
       password: newPassword,
